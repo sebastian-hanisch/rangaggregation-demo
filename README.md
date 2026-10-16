@@ -1,5 +1,7 @@
 # Borda, Copeland, Kemeny: viele Rangfolgen zu einer – Streamlit-Demo
 
+**[→ Demo live ausprobieren](https://sebastianhanisch-rangaggregation-demo.streamlit.app/)**
+
 Drittes Stück der **Ranking-Linie** (Konzepte-Demo), Nachfolger von `rangdistanz-demo`: Mehrere Bewerter liefern je eine Rangfolge, vier Verfahren führen
 sie zu einer zusammen, vier Experimente messen, was das bringt. Das Vehikel ist dasselbe neutrale, simulierte Turnier wie in den ersten beiden Stücken:
 Jeder Bewerter bringt die Tabelle eines **eigenen kleinen Turniers** mit (oder eine Zufallsabweichung nach dem Mallows-Modell) um dieselbe wahre
@@ -128,4 +130,4 @@ Gebaut mit Streamlit, Plotly, numpy, scipy, pandas und fpdf2.
 
 ---
 
-Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html).
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Ranking: von der Siegtabelle bis Learning to Rank](https://sebastianhanisch.net/konzepte-ranking.html).
