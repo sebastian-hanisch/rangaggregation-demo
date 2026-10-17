@@ -11,7 +11,7 @@ Ordnung. Alles ist simuliert, es gibt keinen echten Datensatz.
 
 Aus vielen Rangfolgen eine zu machen heißt, ein **Ziel** zu wählen. **Borda** summiert die Plätze, **Copeland** zählt die paarweisen Mehrheiten,
 **Kemeny** minimiert den Gesamtabstand (Summe der Kendall-Distanzen) zu den Eingaben, die **Footrule-Zuordnung** ist seine billige Näherung. Die
-Eingaben am besten zusammenzufassen ist nicht dasselbe, wie der Wahrheit am nächsten zu kommen; und keine Aggregation ersetzt die Rohdaten.
+Eingaben am besten zusammenzufassen ist nicht dasselbe, wie der Wahrheit am nächsten zu kommen (gemessen bei Turnier-Tabellen als Rauschen); und keine Aggregation ersetzt die Rohdaten.
 
 ## Modell
 
@@ -38,15 +38,15 @@ Alle Zahlen: 8 Teilnehmer, Turnier-Tabellen mit einer Partie je Paar, 300 feste 
 
 | Frage | Befund | Test |
 |---|---|---|
-| Wie gut führen die Verfahren 15 Tabellen zusammen? | Eine einzelne Tabelle liegt im Mittel bei 6,47 (von höchstens 28). **Borda 1,47**, Copeland 1,76, Kemeny 1,76, Footrule-optimal 1,81. | `test_distance_to_the_truth_with_fifteen_voters` |
+| Wie gut führen die Verfahren 15 Tabellen zusammen? | Eine einzelne Tabelle liegt im Mittel bei 6,47 (von höchstens 28). **Borda 1,47**, Copeland 1,76, Kemeny 1,76, Footrule-optimal 1,81 (Werte der 300 festen Profile; 1500 andere Profile geben Borda 1,34, Copeland 1,65, Kemeny 1,61, Footrule-optimal 1,81, die Reihenfolge bleibt). | `test_distance_to_the_truth_with_fifteen_voters` |
 | Hilft es, die Rohdaten zu behalten? | **Alle Partien in eine Tabelle: 1,10**, besser als jede Aggregation bei jeder Zahl von Bewertern (3, 5, 9, 15). Aggregation verliert Information. | `test_pooling_all_games_beats_every_aggregation_and_more_voters_always_help` |
 | Ist die genaueste Zusammenfassung (Kemeny) auch die der Wahrheit nächste? | **Nein, nicht bei Turnier-Tabellen:** Kemeny minus Borda im Abstand zur Wahrheit +0,29 ± 0,06 (15 Bewerter, gepaart); Kemeny besser in 19 %, schlechter in 40 % der Profile. | `test_kemeny_is_farther_from_the_truth_than_borda_under_tournament_noise` |
-| Und unter Mallows-Rauschen, für das Kemeny der Maximum-Likelihood-Schätzer sein soll (φ = 0,7)? | **Kein erkennbarer Unterschied:** −0,03 ± 0,08 (15 Bewerter); bei 5 und 9 Bewertern ebenfalls innerhalb von zwei Standardfehlern. | `test_under_mallows_noise_the_two_are_indistinguishable` |
-| Wie oft läuft die Mehrheit im Kreis? | Bei 8 Teilnehmern hat 40 % der Profile mit 3 Bewertern irgendwo einen Mehrheitszyklus, 15 % mit 15 Bewertern; ein **Mehrheitssieger fehlt aber nur in 9 % bzw. 3 %**. Bei zufälligen Rangfolgen von 3 Teilnehmern: **12 von 216 Profilen (5,6 %) mit 3 Bewertern**, rund 9 % mit 201. | `test_cycles_among_eight_participants_and_the_rarer_missing_winner`, `test_random_rankings_of_three_candidates_approach_the_limit` |
-| Wie oft ist Kemeny nicht eindeutig? | In 23 % (3 Bewerter) bis 9 % (15 Bewerter) der Profile gibt es mehrere gleich gute Rangfolgen. | `test_kemeny_is_often_not_unique_and_borda_often_not_cost_optimal` |
-| Ist Borda als Zusammenfassung kostenoptimal? | In 67 % bis 76 % der Profile **nicht**: Borda liegt der Wahrheit näher, hat aber höhere Gesamtkosten zu den Eingaben. | `test_kemeny_is_often_not_unique_and_borda_often_not_cost_optimal` |
+| Und unter Mallows-Rauschen, für das Kemeny der Maximum-Likelihood-Schätzer sein soll (φ = 0,7)? | **In den 300 Profilen kein erkennbarer Unterschied:** −0,03 ± 0,08 (15 Bewerter); bei 5 und 9 Bewertern ebenfalls innerhalb von zwei Standardfehlern. Die Stichprobe ist dafür zu klein: mit 4000 anderen Profilen liegt Kemeny bei 15 Bewertern um 0,17 ± 0,02 Paare näher an der Wahrheit (ein kleiner Vorteil). | `test_under_mallows_noise_the_two_are_indistinguishable` |
+| Wie oft läuft die Mehrheit im Kreis? | Bei 8 Teilnehmern hat 40 % der Profile mit 3 Bewertern irgendwo einen Mehrheitszyklus, 12 bis 15 % mit 15 Bewertern; ein **Mehrheitssieger fehlt aber nur in rund 9 % bzw. 2 bis 3 %** (Stichprobe: 15 % und 3 %; 1500 andere Profile: 12 % und 2 %). Bei zufälligen Rangfolgen von 3 Teilnehmern: **12 von 216 Profilen (5,6 %) mit 3 Bewertern**, rund 9 % mit 201. | `test_cycles_among_eight_participants_and_the_rarer_missing_winner`, `test_random_rankings_of_three_candidates_approach_the_limit` |
+| Wie oft ist Kemeny nicht eindeutig? | In 9 % (15 Bewerter) bis 26 % (5 Bewerter) der Profile gibt es mehrere gleich gute Rangfolgen (3 Bewerter: 23 %). | `test_kemeny_is_often_not_unique_and_borda_often_not_cost_optimal` |
+| Ist Borda als Zusammenfassung kostenoptimal? | In rund 60 bis 76 % der Profile **nicht** (Stichprobe 67 bis 76 %; 1500 andere Profile 60,5 % bei 15 Bewertern): Borda liegt der Wahrheit im Mittel näher, hat aber höhere Gesamtkosten zu den Eingaben. | `test_kemeny_is_often_not_unique_and_borda_often_not_cost_optimal` |
 | Wie nah kommt die Footrule-Zuordnung an Kemeny? | Kostenverhältnis im Mittel 1,10 (3 Bewerter) bis 1,02 (15), größter Wert 1,47, unter der Garantie 2 (aus K ≤ F ≤ 2K). | `test_footrule_assignment_stays_close_to_the_kemeny_cost_and_below_the_guarantee` |
-| Was kostet das exakte Kemeny? | Der Aufwand der Teilmengen-DP wächst mit 2ⁿ · n (49 152 Schritte bei n = 12 gegen 384 bei n = 6); die Rechenzeit hängt vom Rechner ab und steht in der App. | `test_time_kemeny_returns_one_row_per_size_and_growing_state_counts` |
+| Was kostet das exakte Kemeny? | Die Zahl der Zustand-Kandidat-Paare der Teilmengen-DP wächst mit 2ⁿ · n (49 152 bei n = 12 gegen 384 bei n = 6); die Rechenzeit wächst je zwei Teilnehmer mehr etwa auf das Vier- bis Fünffache (jeder Schritt summiert zusätzlich über die Menge), hängt vom Rechner ab und steht in der App. | `test_time_kemeny_returns_one_row_per_size_and_growing_state_counts` |
 
 ## Befunde und Korrekturen gegenüber dem Plan
 
@@ -68,8 +68,8 @@ Alle Zahlen: 8 Teilnehmer, Turnier-Tabellen mit einer Partie je Paar, 300 feste 
 
 ## Ehrliche Grenzen
 
-- **Der Befund „Borda näher an der Wahrheit“ hängt am Rauschmodell** (Turnier-Tabellen); unter Mallows sind beide gleichauf. Eine Allgemeinaussage wäre
-  falsch.
+- **Der Befund „Borda näher an der Wahrheit“ hängt am Rauschmodell** (Turnier-Tabellen); unter Mallows hat Borda keinen Vorsprung (Kemeny ist hier gleichauf oder leicht
+  besser). Eine Allgemeinaussage wäre falsch.
 - **Kleine Instanzen:** n ≤ 12 wegen der exakten DP, m ≤ 15; ein Stärkeabstand.
 - **Die „wahre Ordnung“ ist eine Konstruktion** des Generators; echte Bewerter haben sie nicht.
 - **Gleichstände** bei Borda, Copeland und Kemeny werden zufällig aufgelöst; das ändert Einzelergebnisse.
@@ -91,7 +91,7 @@ Alle Zahlen: 8 Teilnehmer, Turnier-Tabellen mit einer Partie je Paar, 300 feste 
 
 ## Tests
 
-85 Tests, rund 30 Sekunden: Einheiten gegen die von Hand gerechneten Mini-Instanzen (`test_aggregate.py`, `test_noise.py`), Generator (`test_generator.py`,
+111 Tests, rund 110 Sekunden: Einheiten gegen die von Hand gerechneten Mini-Instanzen (`test_aggregate.py`, `test_noise.py`), Generator (`test_generator.py`,
 wortgleich mit der Wurzel), **Orakel** (`test_oracle_rangaggregation.py`: Kemeny gegen die Aufzählung aller Ordnungen, Footrule gegen die Aufzählung aller
 Zuordnungen, Kostenverhältnis höchstens 2, Borda und Copeland gegen Neuberechnung, Mehrheitszyklen gegen die Aufzählung, exakt 12/216, Symmetrie),
 Mallows-Sampler gegen die exakte Verteilung und die geschlossene Formel, Presets, ausblendbare Regler, Analyse und Verdikte (`test_evaluation.py`),

@@ -37,7 +37,7 @@ PRESETS = {
 }
 PRESET_HELP = {
     "Ein Bewerter allein": "Nur eine Tabelle aus einem kleinen Turnier: Alle Verfahren geben sie unverändert zurück, die Aggregation hat nichts zu tun.",
-    "Viele ungenaue Bewerter": "15 Tabellen aus je einem kleinen Turnier: Die Verfahren führen sie zusammen, am nächsten an der Wahrheit liegt oft Borda.",
+    "Viele ungenaue Bewerter": "15 Tabellen aus je einem kleinen Turnier: Die Verfahren führen sie zusammen, am nächsten an der Wahrheit liegt im Mittel Borda (im geladenen Beispiel liegen Copeland und Kemeny vorn).",
     "Kein Mehrheitssieger": "3 Bewerter, 4 Teilnehmer, eine Mehrheit, die im Kreis läuft: kein Teilnehmer schlägt alle anderen (Condorcet-Paradoxon).",
     "Mallows-Rauschen": "9 Rangfolgen, jede eine zufällige Abweichung von der wahren Ordnung nach dem Mallows-Modell (φ = 0,7).",
 }

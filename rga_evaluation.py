@@ -202,7 +202,8 @@ def verdict_pairs(rows) -> tuple[str, str]:
     return "warning", (f"Kemeny minimiert den Abstand zu den **Eingaben**, nicht zur Wahrheit. Bei Turnier-Tabellen liegt er im Mittel um "
                        f"{de(t['mean'])} ± {de(t['se'])} Paare hinter Borda (Kemeny besser in {pct(t['better'])} %, schlechter in {pct(t['worse'])} %); "
                        f"unter Mallows-Rauschen, für das er der Maximum-Likelihood-Schätzer sein soll, liegt der Unterschied bei {de(ml['mean'])} ± "
-                       f"{de(ml['se'])}: kein erkennbarer Vorteil. Der Befund hängt am Rauschmodell.")
+                       f"{de(ml['se'])}: in dieser Stichprobe kein erkennbarer Vorteil, aber auch zu wenig Auflösung für einen kleinen "
+                       "(mit sehr viel mehr Profilen liegt Kemeny hier leicht vorn). Der Befund hängt am Rauschmodell.")
 
 
 def verdict_cycles(res) -> tuple[str, str]:
@@ -210,7 +211,7 @@ def verdict_cycles(res) -> tuple[str, str]:
     exact = res["exact"]
     last = res["random"][-1]
     return "warning", (f"Bei {r3['m']} Bewertern und 8 Teilnehmern hat {pct(r3['cycle'])} % der Profile irgendwo einen Mehrheitszyklus, aber nur in "
-                       f"{pct(1 - r3['winner'])} % fehlt ein Mehrheitssieger (der Zyklus liegt meist weiter hinten). Bei zufälligen Rangfolgen von "
+                       f"{pct(1 - r3['winner'])} % fehlt ein Mehrheitssieger (der Zyklus betrifft die übrigen Teilnehmer, im Mittel nur leicht hinter der Mitte). Bei zufälligen Rangfolgen von "
                        f"3 Teilnehmern sind es mit 3 Bewertern exakt {exact['cycles']} von {exact['profiles']} ({pct1(exact['cycles'] / exact['profiles'])} %) "
                        f"und mit {last['m']} Bewertern {pct1(last['cycle'])} %, im Grenzwert rund 8,8 %: Mehr Bewerter beseitigen den Zyklus nicht.")
 
@@ -219,7 +220,7 @@ def verdict_cost(quality, timing) -> tuple[str, str]:
     q = quality[0]
     t_last, t_first = timing[-1], timing[0]
     return "info", (f"Das exakte Kemeny braucht auf diesem Rechner bei {t_last['n']} Teilnehmern {de(t_last['seconds'], 2)} s (bei {t_first['n']}: "
-                    f"{de(t_first['seconds'], 3)} s). Der Aufwand wächst mit 2ⁿ · n, also je zwei Teilnehmer mehr auf etwas mehr als das Vierfache; "
+                    f"{de(t_first['seconds'], 3)} s). Der Aufwand wächst mit 2ⁿ · n, die Rechenzeit je zwei Teilnehmer mehr etwa auf das Vier- bis Fünffache; "
                     f"die Zeiten selbst hängen vom Rechner ab. Die Footrule-Zuordnung kostet im Mittel nur das {de(q['ratio_mean'], 2)}-Fache des "
                     f"Kemeny-Optimums (größter Wert {de(q['ratio_max'], 2)}, Garantie: höchstens 2). Borda ist bei {pct(q['borda_not_optimal'])} % der "
                     f"Profile mit {q['m']} Bewertern nicht kostenoptimal, Kemeny bei {pct(q['nonunique'])} % nicht eindeutig.")

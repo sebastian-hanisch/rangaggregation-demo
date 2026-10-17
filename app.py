@@ -207,7 +207,7 @@ st.markdown(
 |---|---|---|
 | **Alle Bewerter sind gleich gut** | Hier haben alle dieselbe Genauigkeit. Mit ungleich guten oder manipulierenden Bewertern führen Borda, Copeland und Kemeny zu verzerrten Ergebnissen. | Die Bewerter sind unsicher |
 | **Eine Rangfolge ist das Ziel** | Ein Mehrheitszyklus (Condorcet) zeigt, dass es keine konsistente Mehrheitsordnung geben muss; jedes Verfahren löst das anders auf. | – |
-| **„Näher an der Wahrheit“ gilt allgemein** | Der Vorsprung von Borda vor Kemeny ist an das Rauschmodell gebunden: Unter Mallows-Rauschen sind sie gleichauf. | – |
+| **„Näher an der Wahrheit“ gilt allgemein** | Der Vorsprung von Borda vor Kemeny ist an das Rauschmodell gebunden: Unter Mallows-Rauschen hat Borda keinen Vorsprung (Kemeny ist hier gleichauf oder leicht besser). | – |
 | **Die Eingaben sind alles, was es gibt** | Wer die Rohdaten (alle Partien) hat, sollte sie nicht in Rangfolgen pressen: Die gemeinsame Tabelle liegt näher an der Wahrheit. | Bradley-Terry |
 | **Das exakte Kemeny ist machbar** | Die Teilmengen-DP wächst mit 2ⁿ; die Demo geht bis 12 Teilnehmer. Das Problem ist NP-schwer. | – |
 | **Alles ist simuliert** | Die „wahre Ordnung“ ist eine Konstruktion des Generators, kein Messwert. | – |
