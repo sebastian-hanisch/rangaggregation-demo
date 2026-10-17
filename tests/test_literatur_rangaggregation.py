@@ -18,9 +18,15 @@ Q3  Wikipedia, "Copeland's method" (https://en.wikipedia.org/wiki/Copeland%27s_m
 Q4  Wikipedia, "Condorcet paradox" (https://en.wikipedia.org/wiki/Condorcet_paradox), Abschnitt über die Wahrscheinlichkeit bei
     gleichverteilten Rangfolgen und drei Kandidaten: 3 Wähler 5,556 %, 201 Wähler 8,732 %, Grenzwert 8,77 % (arcsin(√6/9)/π).
 
-Nicht eingesehen und deshalb ohne Test: Kemeny (1959), Young/Levenglick (1978), Dwork et al. (2001, Footrule-Aggregation), Mallows
-(1957), Doignon et al. (2004). Für die Footrule-optimale Aggregation, den Mallows-Sampler und die Kemeny-Rechenzeit liegt kein Zahlenwert
-einer eingesehenen Quelle vor.
+Q5  Dwork, C., Kumar, R., Naor, M., Sivakumar, D. (2001): Rank aggregation methods for the web. WWW10 (PDF-Volltext, archives.iw3c2.org/www10/
+    cdrom/papers/pdf/p577.pdf, Text aus dem PDF extrahiert und gelesen, Einsicht 2026-10-17). Abschnitt 2.1.1: Footrule F = Σ|σ(i) - τ(i)|, Kendall K =
+    Zahl der Paar-Uneinigkeiten; Abschnitt 2.1.2: Proposition 1 (K <= F <= 2K), Proposition 2 (footrule-optimale Aggregation ist 2-Näherung der
+    Kemeny-Aggregation), Kemeny-Aggregation NP-schwer schon für vier Listen; Abschnitt 4.2: Proposition 3 (Mediane bilden eine Permutation => footrule-
+    optimal), Proposition 4 (Mindestkosten-Matching im vollständigen bipartiten Graphen, Gewicht W(c, p) = Σ_i |σ_i(c) - p|). Das Papier enthält kein
+    nachrechenbares Zahlenbeispiel; die Tests prüfen die Aussagen der Propositionen.
+
+Nicht eingesehen und deshalb ohne Test: Kemeny (1959), Young/Levenglick (1978), Mallows (1957), Doignon et al. (2004). Für den Mallows-Sampler
+und die Kemeny-Rechenzeit liegt kein Zahlenwert einer eingesehenen Quelle vor.
 """
 
 import itertools
@@ -158,3 +164,67 @@ def test_condorcet_cycle_probability_for_201_voters_is_close_to_8_732_percent():
     assert abs(hits / trials - p) < 5 * sigma
     # und die Grenzformel arcsin(sqrt(6)/9)/pi ist 8,77 %
     assert math.asin(math.sqrt(6) / 9) / math.pi == pytest.approx(0.0877, abs=5e-5)
+
+
+# --- Q5: Dwork, Kumar, Naor, Sivakumar (2001), Footrule-Aggregation -----------------------------------------------------------------------
+
+def _footrule(a, b) -> int:
+    return int(np.abs(A.positions(a) - A.positions(b)).sum())
+
+
+def test_dwork_proposition_1_kendall_is_at_most_footrule_is_at_most_twice_kendall_for_all_pairs_up_to_n_5():
+    """Q5, Abschnitt 2.1.2, Proposition 1: K(σ,τ) <= F(σ,τ) <= 2 K(σ,τ) für zwei volle Listen (F = Summe der |Platzdifferenzen|)."""
+    for n in range(1, 6):
+        perms = list(itertools.permutations(range(n)))
+        for a in perms:
+            for b in perms:
+                k, f = A.kendall_distance(a, b), _footrule(a, b)
+                assert k <= f <= 2 * k
+
+
+def test_dwork_proposition_4_weights_are_the_summed_position_differences_and_the_matching_is_the_footrule_optimum():
+    """Q5, Abschnitt 4.2, Proposition 4 (Beweisskizze): Gewicht W(c, p) = Σ_i |σ_i(c) - p| der Kante Element c / Platz p; ein Mindestkosten-Matching
+    ist die footrule-optimale Aggregation. Handbeispiel mit drei Listen über vier Elemente, Optimum gegen Aufzählung aller 24 Zuordnungen."""
+    profile = [(0, 1, 2, 3), (1, 0, 2, 3), (3, 2, 1, 0)]
+    cost = A.footrule_cost_matrix(profile, 4)
+    # Element 0: Plätze 0, 1, 3; Element 1: 1, 0, 2; Element 2: 2, 2, 1; Element 3: 3, 3, 0
+    expected = [[sum(abs(pl - p) for pl in places) for p in range(4)] for places in ([0, 1, 3], [1, 0, 2], [2, 2, 1], [3, 3, 0])]
+    assert cost.tolist() == expected
+    best, _ = A.footrule_optimal_brute(profile, 4)
+    for seed in range(5):
+        order = A.footrule_optimal(profile, 4, rng(seed))
+        assert sum(_footrule(order, o) for o in profile) == best
+
+
+def test_dwork_proposition_3_median_positions_forming_a_permutation_are_footrule_optimal():
+    """Q5, Abschnitt 4.2, Proposition 3: bilden die Medianplätze der Kandidaten (bei ungerader Listenzahl) eine Permutation, so ist sie
+    footrule-optimal. Feste Zufallsprofile mit 3 oder 5 Listen über 5 Elemente; mindestens 15 Profile erfüllen die Voraussetzung."""
+    r = np.random.default_rng(2026)
+    checked = 0
+    for trial in range(400):
+        m = 3 if trial % 2 == 0 else 5
+        profile = [tuple(int(x) for x in r.permutation(5)) for _ in range(m)]
+        medians = np.median(np.array([A.positions(o) for o in profile]), axis=0)
+        if sorted(medians.tolist()) != [0, 1, 2, 3, 4]:
+            continue
+        order = tuple(int(i) for i in np.argsort(medians))
+        best, _ = A.footrule_optimal_brute(profile, 5)
+        assert sum(_footrule(order, o) for o in profile) == best
+        checked += 1
+    assert checked >= 15
+
+
+def test_dwork_proposition_2_footrule_optimum_costs_at_most_twice_the_kemeny_optimum():
+    """Q5, Abschnitt 2.1.2, Proposition 2: ist σ Kemeny-optimal und σ' footrule-optimal, so gilt K(σ', τ_1..τ_k) <= 2 K(σ, τ_1..τ_k).
+    Geprüft für jede footrule-optimale Rangfolge (nicht nur die gewählte) auf 60 festen Profilen mit 5 Elementen."""
+    r = np.random.default_rng(7)
+    for trial in range(60):
+        m = int(r.integers(2, 7))
+        profile = [tuple(int(x) for x in r.permutation(5)) for _ in range(m)]
+        kemeny_cost, _, _ = A.kemeny_dp(profile, 5)
+        cost = A.footrule_cost_matrix(profile, 5)
+        sums = {perm: sum(cost[perm[j]][j] for j in range(5)) for perm in itertools.permutations(range(5))}
+        best = min(sums.values())
+        for perm, value in sums.items():          # perm[j] = Element auf Platz j
+            if value == best:
+                assert A.total_cost(perm, profile) <= 2 * kemeny_cost

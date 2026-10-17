@@ -78,7 +78,8 @@ Alle Zahlen: 8 Teilnehmer, Turnier-Tabellen mit einer Partie je Paar, 300 feste 
 ## Quellen
 
 - Dwork, C., Kumar, R., Naor, M., Sivakumar, D. (2001): Rank aggregation methods for the web. *WWW10*, 613–622 (DOI 10.1145/371920.372165). Die
-  Zuordnungsformulierung der Footrule-Aggregation nach der gängigen Darstellung dieser Arbeit; das Original wurde im Wortlaut nicht eingesehen.
+  Zuordnungsformulierung der Footrule-Aggregation (Proposition 4, Abschnitt 4.2) und die Schranke K ≤ F ≤ 2K samt 2-Näherung (Propositionen 1 und 2,
+  Abschnitt 2.1.2) im Original eingesehen 2026-10-17 (PDF-Volltext, WWW10-Archiv).
 - Young, H. P., Levenglick, A. (1978): A consistent extension of Condorcet's election principle. *SIAM Journal on Applied Mathematics* 35 (Seitenzahlen nicht
   geprüft).
 - Kemeny, J. G. (1959): Mathematics without numbers. *Daedalus* 88, 577–591 (Angabe nicht geprüft).

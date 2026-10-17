@@ -237,7 +237,9 @@ wegen $K \le F \le 2K$ ist ihre Kemeny-Kostenabweichung höchstens ein Faktor 2.
 
 **Literatur.**
 - Dwork, C., Kumar, R., Naor, M., Sivakumar, D. (2001): Rank aggregation methods for the web. *Proceedings of the 10th International World Wide Web Conference
-  (WWW10)*, 613–622. Die Zuordnungsformulierung der Footrule-Aggregation nach der gängigen Darstellung dieser Arbeit; das Original wurde nicht im Wortlaut eingesehen.
+  (WWW10)*, 613–622 (DOI 10.1145/371920.372165). Die
+  Zuordnungsformulierung der Footrule-Aggregation (Proposition 4, Abschnitt 4.2) und die Schranke $K \le F \le 2K$ samt 2-Näherung (Propositionen 1 und 2,
+  Abschnitt 2.1.2) im Original eingesehen 2026-10-17 (PDF-Volltext, WWW10-Archiv).
 - Young, H. P., Levenglick, A. (1978): A consistent extension of Condorcet's election principle. *SIAM Journal on Applied Mathematics* 35, 285–300 (Kemeny-Regel als
   einzige konsistente, neutrale Condorcet-Regel; Seitenzahlen nicht geprüft).
 - Kemeny, J. G. (1959): Mathematics without numbers. *Daedalus* 88, 577–591 (Angabe nicht geprüft).
